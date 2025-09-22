@@ -1,6 +1,6 @@
-
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const items = [
   { image: "/assets/products/featured1.png", title: "JAZZMASTER", id: "1", price: "$1050" },
@@ -9,6 +9,13 @@ const items = [
 ];
 
 const Featured = () => {
+  // نگه‌داشتن id آیتمی که باز شده
+  const [openItem, setOpenItem] = useState(null);
+
+  const handleToggle = (id) => {
+    setOpenItem(openItem === id ? null : id);
+  };
+
   return (
     <section className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-10 xl:px-10 py-16">
       <div>
@@ -23,8 +30,8 @@ const Featured = () => {
           {items.map((item) => (
             <div
               key={item.id}
-              tabIndex={0} // برای focus در موبایل
-              className="flex flex-col items-center gap-4 border border-gray-300 p-6 rounded-lg group transition-all duration-300 focus:outline-none"
+              onClick={() => handleToggle(item.id)}
+              className="flex flex-col items-center gap-4 border border-gray-300 p-6 rounded-lg group transition-all duration-300 cursor-pointer"
             >
               {/* تصویر */}
               <Image src={item.image} width={140} height={214} alt={item.title} />
@@ -36,8 +43,11 @@ const Featured = () => {
               </div>
 
               {/* دکمه Add to Cart */}
-              <div className="overflow-hidden transition-all duration-300 max-h-0 
-                              group-hover:max-h-20 group-focus:max-h-20 group-active:max-h-20">
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openItem === item.id ? "max-h-20" : "max-h-0"
+                }`}
+              >
                 <button className="mt-4 bg-[#2B2B2B] text-white px-6 py-2 rounded w-full">
                   Add to Cart
                 </button>
@@ -51,4 +61,3 @@ const Featured = () => {
 };
 
 export default Featured;
-
